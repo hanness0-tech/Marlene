@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Für dich</title>
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #c1121f, #f4978e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 22px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.15),
+        0 0 30px rgba(193,18,31,0.25);
+    animation: fadeIn 0.6s ease;
+    position: relative;
+}
+
+img {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h1 {
+    font-size: 24px;
+    color: #8b0000;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+p {
+    font-size: 16.5px;
+    color: #444;
+    line-height: 1.55;
+    margin: 8px 0;
+}
+
+.buttons {
+    margin-top: 26px;
+    position: relative;
+    height: 130px;
+    text-align: center;
+}
+
+button {
+    font-size: 17px;
+    padding: 12px 28px;
+    border-radius: 28px;
+    border: none;
+    cursor: pointer;
+}
+
+.yes {
+    background: #c1121f;
+    color: white;
+    box-shadow: 0 6px 18px rgba(193,18,31,0.4);
+}
+
+.no {
+    background: #ededed;
+    color: #333;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 70px;
+}
+
+.next {
+    position: absolute;
+    bottom: 18px;
+    right: 18px;
+    background: #c1121f;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 6px 16px rgba(193,18,31,0.35);
+}
+
+#page2 {
+    display: none; /* versteckt bis Klick */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="page1">
+    <img src="bild.jpg" alt="Wir">
+
+    <h1>Kurze Frage</h1>
+    <p>Ich dachte, ich frage einfach direkt:</p>
+    <p><strong>Hättest du Lust, mein Valentins-Date zu sein?</strong></p>
+
+    <div class="buttons">
+        <button class="yes" onclick="yes()">Ja</button>
+        <button class="no" id="noBtn" onclick="noClick()">Nein</button>
+    </div>
+</div>
+
+<div class="card" id="page2">
+    <p><strong>Liebe Marlene,</strong></p>
+    <p>
+    nächsten Monat ist es soweit – dann sind wir zwei Jahre zusammen.
+    Ich habe nicht einen Tag, nicht eine Minute, nicht einmal eine Sekunde davon bereut,
+    dich als meine Partnerin an meiner Seite zu haben.
+    </p>
+
+    <p>
+    Du hilfst mir, tröstest mich und unterstützt mich bei egal welchen Entscheidungen oder Plänen,
+    die ich im Kopf habe, und dafür wollte ich dir einfach von Herzen danken.
+    </p>
+
+    <p>
+    Danke, dass du mich so akzeptierst, wie ich bin.<br>
+    Danke, dass du einfach so eine tolle, perfekte, wunderschöne, liebevolle und humorvolle Person bist
+    und ich dich meine Partnerin nennen darf.
+    </p>
+
+    <p>
+    Obwohl es manchmal Ups und Downs bei uns gab, habe ich nie an uns gezweifelt.
+    Ich war immer zuversichtlich, dass unsere Herzen immer wieder zueinander finden,
+    egal wie aussichtslos eine Lage auch ausgesehen hat.
+    </p>
+
+    <p>
+    Ich hoffe einfach, dass das mit uns ewig hält und dass unsere Herzen immer miteinander verbunden bleiben,
+    denn ich könnte ohne dich nicht mehr normal weiterleben.
+    </p>
+
+    <p><strong>Ich liebe dich von ganzem Herzen.</strong></p>
+    <p><strong>Dein Hannes</strong></p>
+</div>
+
+<audio id="yesSound">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-soft-confirmation-tone-2866.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let noClicks = 0;
+
+function yes() {
+    document.getElementById("yesSound").play();
+    // Zeige erste Ja-Seite mit "Ich liebe dich, mein Engel" + Button für nächste Seite
+    document.getElementById("page1").innerHTML = `
+        <img src="bild.jpg" alt="Wir">
+        <h1>❤️</h1>
+        <p><strong>Ich liebe dich, mein Engel ❤️</strong></p>
+        <p>Ich freue mich auf morgen (und dich) ❤️</p>
+        <button class="next" onclick="showPage2()">Weiter →</button>
+    `;
+}
+
+function showPage2() {
+    document.getElementById("page1").style.display = "none";
+    document.getElementById("page2").style.display = "block";
+}
+
+function noClick() {
+    noClicks++;
+    const btn = document.getElementById("noBtn");
+    if (noClicks < 3) {
+        const maxX = window.innerWidth - btn.offsetWidth - 20;
+        const maxY = window.innerHeight - btn.offsetHeight - 20;
+        btn.style.left = Math.random() * maxX + "px";
+        btn.style.top = Math.random() * maxY + "px";
+    }
+}
+</script>
+
+</body>
+</html>
